@@ -2,23 +2,30 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vanilla App Template</title>
-    <link rel="stylesheet" href="./css/styles.css" />
+    <title>Gallery Image</title>
+    <link type="image/svg+xml" href="./img/g.svg" rel="icon" />
+    <meta name="description" content="Gallery by your request" />
+    <link href="./css/styles.css" rel="stylesheet" />
   </head>
   <body>
-    <load ="partials/header.html" />
-
-    <section>
-      <h1>Example page title</h1>
-      <!-- Path to images as from index.html file -->
-      <img src="./img/javascript.svg" alt="" />
-    </section>
-
-    <!-- Loads the specified .html file -->
-    <load ="partials/vite-promo.html" />
-
-    <script type="module" src="./main.js"></script>
+    <form>
+      <input
+        id="searchrequest"
+        name="searchrequest"
+        type="text"
+        placeholder="Search images..."
+        required
+        autocomplete="off"
+      />
+      <button class="blue-btn" type="submit">Search</button>
+    </form>
+    <div class="gallery"></div>
+    <div class="gallery loader"></div>
+    <button class="load-more">Load more</button>
+    <div id="loading-message" class="loading-message">
+      Loading images, please wait...
+    </div>
+    <script src="./main.js" type="module" defer></script>
   </body>
 </html>
