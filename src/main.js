@@ -11,6 +11,7 @@ const loadMoreBtn = document.querySelector('.load-more');
 const loadingMessage = document.getElementById('loading-message');
 let currentPage = 1;
 let currentSearch = '';
+let totalHits = 0;
 
 const errMessage = {
   position: 'topRight',
@@ -41,25 +42,39 @@ const fetchImages = async searchQuery => {
 
   try {
     const data = await pixabayApi(searchQuery, currentPage);
-
     loader.style.display = 'none';
     loadingMessage.style.display = 'none';
-    if (data.hits.length === 0) {
+
+    if (data.hits.length === 0 && currentPage === 1) {
       iziToast.error(errMessage);
-    } else {
-      render(data.hits, gallery);
-      currentPage += 1;
-      loadMoreBtn.style.display = 'block';
+      loadMoreBtn.style.display = 'none';
+      return;
     }
 
-    if (currentPage > data.totalHits / 15) {
-      loadMoreBtn.style.display = 'none';
-      iziToast.info({
-        position: 'topRight',
-        theme: 'dark',
-        color: '#007bff',
-        message: "We're sorry, but you've reached the end of search results.",
-      });
+    if (data.hits.length > 0) {
+      render(data.hits, gallery);
+      currentPage += 1;
+      totalHits = data.totalHits;
+
+      if (currentPage > Math.ceil(totalHits / 15)) {
+        loadMoreBtn.style.display = 'none';
+        iziToast.info({
+          position: 'topRight',
+          theme: 'dark',
+          color: '#007bff',
+          message: "We're sorry, but you've reached the end of search results.",
+        });
+      } else if (data.hits.length < 15 && currentPage === 2) {
+        loadMoreBtn.style.display = 'none';
+        iziToast.info({
+          position: 'topRight',
+          theme: 'dark',
+          color: '#007bff',
+          message: "We're sorry, but you've reached the end of search results.",
+        });
+      } else {
+        loadMoreBtn.style.display = 'block';
+      }
     }
   } catch (error) {
     loader.style.display = 'none';
